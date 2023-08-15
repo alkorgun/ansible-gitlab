@@ -81,3 +81,8 @@ gitlab_letsencrypt_auto_renew_hour: 1
 gitlab_letsencrypt_auto_renew_minute: 30
 gitlab_letsencrypt_auto_renew_day_of_month: "*/7"
 gitlab_letsencrypt_auto_renew: true
+
+# Grafana configuration.
+gitlab_grafana_enable: false
+gitlab_grafana_disable_login_form: false
+gitlab_grafana_admin_password: ""

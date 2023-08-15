@@ -1,0 +1,49 @@
+---
+- name: Enable EPEL
+  package:
+    name: epel-release
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Install firewalld
+  package:
+    name:
+      - firewalld
+      - python3-firewall
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Install pexpect
+  pip:
+    name: pexpect
+
+- name: Start firewalld
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Enable HTTP
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    immediate: yes
+    permanent: yes
+    state: enabled
+  loop:
+    - http
+    - https
+  when: ansible_os_family == 'RedHat'
+
+- name: Set admin password
+  expect:
+    command: gitlab-rake "gitlab:password:reset[root]"
+    responses:
+      "(?i).*password.*": "{{ gitlab_admin_password }}"
+  when: gitlab_admin_password != ''
+
+- name: Set Grafana admin password
+  expect:
+    command: gitlab-ctl set-grafana-password
+    responses:
+      "(?i).*password.*": "{{ gitlab_grafana_admin_password }}"
+  when: gitlab_grafana_admin_password != ''

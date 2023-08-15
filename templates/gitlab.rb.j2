@@ -115,3 +115,9 @@ registry_nginx['ssl_certificate_key'] = "{{ gitlab_registry_nginx_ssl_certificat
 
 # To change other settings, see:
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#changing-gitlab-yml-settings
+
+{% if gitlab_grafana_enable %}
+grafana['enable'] = true
+grafana['disable_login_form'] = {{ gitlab_grafana_disable_login_form | lower }}
+grafana['admin_password'] = "{{ gitlab_grafana_admin_password }}"
+{% endif %}

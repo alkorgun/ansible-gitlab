@@ -79,3 +79,6 @@
     group: root
     mode: 0600
   notify: restart gitlab
+
+- name: My custom tasks
+  include_tasks: custom.yml
