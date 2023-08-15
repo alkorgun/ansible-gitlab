@@ -16,12 +16,20 @@
 - name: Install pexpect
   pip:
     name: pexpect
+  when: ansible_os_family == 'RedHat'
+
+- name: Install pexpect
+  package:
+    name: python3-pexpect
+    state: present
+  when: ansible_os_family == 'Debian'
 
 - name: Start firewalld
   systemd:
     name: firewalld
     state: started
     enabled: yes
+  when: ansible_os_family == 'RedHat'
 
 - name: Enable HTTP
   ansible.posix.firewalld:
